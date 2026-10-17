@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Calculate product profit after discounts, shipping and platform fees. Compare pricing scenarios, privately in your browser.">
+  <meta name="theme-color" content="#18392d">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <title>MarginDesk — Know what you keep.</title>
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css">
+  <script type="module" src="app.js"></script>
+</head>
+<body>
+<header class="topbar"><a class="brand" href="./" aria-label="MarginDesk home"><span class="mark">m<span>↗</span></span> MarginDesk</a><span class="top-note"><i></i> Your numbers stay on your device</span><button id="print" class="quiet">Print report <span aria-hidden="true">↗</span></button></header>
+<main>
+  <section class="intro"><div><p class="eyebrow">THE INDEPENDENT SELLER'S PRICING DESK</p><h1>Make a sale.<br><em>Keep a profit.</em></h1><p class="intro-copy">See what’s left after discounts, delivery and fees.<br>A clearer price starts with the whole picture.</p></div><div class="intro-side"><span class="small-label">YOUR WORKSPACE</span><p>Small decisions.<br>Better margins.</p><span class="version">FREE TOOL &nbsp; / &nbsp; NO SIGN-UP</span></div></section>
+  <section class="workspace" aria-label="Pricing calculator">
+    <div class="input-panel panel">
+      <div class="panel-heading"><div><p class="eyebrow">01 / THE NUMBERS</p><h2>Price your product</h2></div><label class="currency-label"><span class="sr-only">Currency</span><select id="currency"><option value="INR">INR ₹</option><option value="USD">USD $</option><option value="GBP">GBP £</option><option value="EUR">EUR €</option></select></label></div>
+      <form id="calculator">
+        <label class="name-label">Product / scenario name <input id="product" maxlength="70" placeholder="e.g. Paperback · weekend offer" autocomplete="off"></label>
+        <div class="group-title">Selling price</div>
+        <div class="field-grid"><label>List price <span class="input-wrap"><span class="money-symbol">₹</span><input id="price" type="number" min="0" max="1000000000" step="any" value="799" inputmode="decimal" required></span></label><label>Discount <span class="input-wrap"><input id="discount" type="number" min="0" max="100" step="any" value="10" inputmode="decimal" required><span>%</span></span></label></div>
+        <div class="group-title">What it costs you</div>
+        <div class="field-grid"><label>Product cost <span class="input-wrap"><span class="money-symbol">₹</span><input id="cost" type="number" min="0" max="1000000000" step="any" value="350" inputmode="decimal" required></span></label><label>Shipping you pay <span class="input-wrap"><span class="money-symbol">₹</span><input id="shipping" type="number" min="0" max="1000000000" step="any" value="60" inputmode="decimal" required></span></label><label>Packaging <span class="input-wrap"><span class="money-symbol">₹</span><input id="packaging" type="number" min="0" max="1000000000" step="any" value="15" inputmode="decimal" required></span></label><label>Fixed fee per order <span class="input-wrap"><span class="money-symbol">₹</span><input id="fixed" type="number" min="0" max="1000000000" step="any" value="0" inputmode="decimal" required></span></label><label>Platform / payment fee <span class="input-wrap"><input id="fee" type="number" min="0" max="99.99" step="any" value="8" inputmode="decimal" required><span>%</span></span></label><label>Target profit margin <span class="input-wrap"><input id="target" type="number" min="0" max="99.99" step="any" value="25" inputmode="decimal" required><span>%</span></span></label></div>
+        <p class="field-hint">Percentage fees apply to the discounted selling price.</p>
+        <p id="error" role="alert" hidden></p>
+        <div class="form-actions"><button id="save" class="primary" type="submit">Save for comparison <span aria-hidden="true">+</span></button><button id="reset" type="button" class="quiet">Reset example</button></div>
+      </form>
+    </div>
+    <div class="results-column" aria-live="polite" aria-atomic="true">
+      <div class="profit-card"><div class="profit-top"><p class="eyebrow">02 / WHAT YOU KEEP</p><span id="health" class="badge">Above target</span></div><p class="profit-label">Estimated profit per sale</p><div class="profit-amount" id="profit">—</div><div class="profit-bottom"><span><strong id="margin">—</strong> profit margin</span><span>PER ORDER</span></div><div class="distribution" role="img" id="distribution" aria-label="Cost and profit breakdown"><div id="cost-bar"></div><div id="fee-bar"></div><div id="profit-bar"></div></div><div class="legend"><span><i class="cost-dot"></i> Product & delivery</span><span><i class="fee-dot"></i> Fees</span><span><i class="profit-dot"></i> Profit</span></div></div>
+      <div class="breakdown panel"><h3>The full picture</h3><dl><div><dt>Customer pays</dt><dd id="revenue">—</dd></div><div><dt>Product, shipping & packaging</dt><dd id="base-cost">—</dd></div><div><dt>Platform & fixed fees</dt><dd id="platform">—</dd></div><div class="total-row"><dt>Total cost per sale</dt><dd id="costs">—</dd></div></dl><div class="suggestion"><span class="idea" aria-hidden="true">↗</span><div><h4>Your target list price</h4><strong id="suggested">—</strong><p id="target-copy">At your current discount and target margin.</p></div></div><div class="break-even">Break-even list price <strong id="break-even">—</strong></div></div>
+    </div>
+  </section>
+  <section class="comparison panel"><div class="comparison-heading"><div><p class="eyebrow">03 / TRY THE POSSIBILITIES</p><h2>Your pricing scenarios</h2></div><button id="export" class="quiet" disabled>Export JSON ↓</button></div><p id="empty" class="empty">A little comparison goes a long way.<span>Save a scenario above, change a few numbers, then save another.</span></p><div class="table-scroll" id="table-wrap" hidden><table><caption class="sr-only">Saved pricing scenarios, stored on this device</caption><thead><tr><th scope="col">Scenario</th><th scope="col">List price</th><th scope="col">Customer pays</th><th scope="col">Profit</th><th scope="col">Margin</th><th scope="col">Actions</th></tr></thead><tbody id="scenarios"></tbody></table></div><p id="status" role="status"></p></section>
+  <section class="notes"><div><span>01</span><h3>Made for everyday decisions</h3><p>Compare a discount, a new supplier or a delivery charge before changing your price.</p></div><div><span>02</span><h3>Your business stays yours</h3><p>No account, analytics or server uploads. Saved scenarios live in this browser. Clearing browser data removes them.</p></div><div><span>03</span><h3>Know the assumptions</h3><p>Estimates cover one item per order. Tax, returns, ad spend and overhead are excluded. Currency changes the label, not the exchange rate.</p></div></section>
+</main><footer><a class="brand" href="./">MarginDesk<span class="footer-dot">.</span></a><span>More clarity. Better pricing.</span><span>Built for independent sellers.</span></footer>
+<noscript><p class="noscript">Enable JavaScript to use the pricing calculator. No data leaves your browser.</p></noscript>
+</body></html>

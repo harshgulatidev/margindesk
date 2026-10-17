@@ -1,0 +1,20 @@
+{
+  "url": "https://westwordcorp.com/tools/margindesk/",
+  "checks": [
+    "initial calculation",
+    "desktop render",
+    "scenario persistence",
+    "text-only product names",
+    "loss state",
+    "load scenario",
+    "unreachable target",
+    "invalid-input handling",
+    "currency label",
+    "JSON export",
+    "remove scenario",
+    "mobile no horizontal overflow",
+    "print rendering",
+    "no browser errors"
+  ],
+  "passed": true
+}

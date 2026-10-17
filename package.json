@@ -1,0 +1,9 @@
+{
+  "name": "margindesk",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A private-by-default pricing and profit calculator for independent sellers.",
+  "type": "module",
+  "scripts": { "test": "node --test tests/*.test.mjs" },
+  "engines": { "node": ">=18" }
+}

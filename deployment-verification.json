@@ -1,0 +1,36 @@
+{
+  "url": "https://westwordcorp.com/tools/margindesk/",
+  "files": [
+    {
+      "file": "index.html",
+      "status": 200,
+      "content_type": "text/html",
+      "exact_match": true
+    },
+    {
+      "file": "style.css",
+      "status": 200,
+      "content_type": "text/css",
+      "exact_match": true
+    },
+    {
+      "file": "app.js",
+      "status": 200,
+      "content_type": "application/x-javascript",
+      "exact_match": true
+    },
+    {
+      "file": "math.js",
+      "status": 200,
+      "content_type": "application/x-javascript",
+      "exact_match": true
+    },
+    {
+      "file": "icon.svg",
+      "status": 200,
+      "content_type": "image/svg+xml",
+      "exact_match": true
+    }
+  ],
+  "browser_visual_qa": "passed: desktop and mobile screenshots reviewed; 14 browser checks passed"
+}
