@@ -1,16 +1,22 @@
-name: Deploy to Hostinger
+name: Deploy to GitHub Pages
 on:
   push:
     branches: [main]
   workflow_dispatch:
 permissions:
   contents: read
+  pages: write
+  id-token: write
 concurrency:
-  group: margindesk-production
+  group: pages
   cancel-in-progress: false
 jobs:
-  verify:
+  deploy:
+    if: github.repository_owner == 'harshgulatidev'
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -19,27 +25,10 @@ jobs:
       - run: npm ci
       - run: npm run build
       - run: npm test
-      - run: node --check dist/app.js
-  deploy:
-    if: github.repository == 'harshgulatidev/margindesk'
-    needs: verify
-    runs-on: ubuntu-latest
-    environment: production
-    steps:
-      - name: Deploy the tested commit
-        env:
-          DEPLOY_KEY: ${{ secrets.HOSTINGER_DEPLOY_KEY }}
-          KNOWN_HOSTS: ${{ secrets.HOSTINGER_KNOWN_HOSTS }}
-          DEPLOY_HOST: ${{ vars.HOSTINGER_HOST }}
-          DEPLOY_USER: ${{ vars.HOSTINGER_USER }}
-          DEPLOY_PORT: ${{ vars.HOSTINGER_PORT }}
-        shell: bash
-        run: |
-          set -euo pipefail
-          umask 077
-          mkdir -p ~/.ssh
-          printf '%s\n' "$DEPLOY_KEY" | tr -d '\r' > ~/.ssh/hostinger_deploy
-          printf '%s\n' "$KNOWN_HOSTS" | tr -d '\r' > ~/.ssh/known_hosts
-          ssh -i ~/.ssh/hostinger_deploy -p "$DEPLOY_PORT" \
-            -o BatchMode=yes -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes \
-            "$DEPLOY_USER@$DEPLOY_HOST" "$GITHUB_SHA"
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+      - name: Publish app
+        id: deployment
+        uses: actions/deploy-pages@v4

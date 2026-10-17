@@ -2,10 +2,10 @@
 
 A responsive, browser-based pricing calculator for independent sellers. Calculate per-order profit after discounts, product cost, delivery, packaging and platform fees. Compare up to 12 saved scenarios, export them as JSON, and print a report.
 
-**[Open the live app](https://westwordcorp.com/tools/margindesk/)**
+**[Open the live app](https://harshgulatidev.github.io/margindesk/)**
 
 [![Test pricing calculations](https://github.com/harshgulatidev/margindesk/actions/workflows/test.yml/badge.svg)](https://github.com/harshgulatidev/margindesk/actions/workflows/test.yml)
-[![Deploy to Hostinger](https://github.com/harshgulatidev/margindesk/actions/workflows/deploy.yml/badge.svg)](https://github.com/harshgulatidev/margindesk/actions/workflows/deploy.yml)
+[![Deploy to GitHub Pages](https://github.com/harshgulatidev/margindesk/actions/workflows/deploy.yml/badge.svg)](https://github.com/harshgulatidev/margindesk/actions/workflows/deploy.yml)
 
 ![MarginDesk desktop preview](desktop.png)
 
@@ -38,37 +38,11 @@ Run the calculation and server tests:
 npm test
 ```
 
-## Deploy on Hostinger
+## Deploy independently
 
-### Hostinger Web Apps
+GitHub Actions runs the build and tests, then publishes `dist/` to GitHub Pages. No company server, SSH key or external hosting account is required. Enable Pages with GitHub Actions as the source in repository settings.
 
-Import this public GitHub repository as a Node.js web app. Use these settings if automatic detection asks for them:
-
-| Setting | Value |
-| --- | --- |
-| Framework | Express |
-| Node.js | 22 or later |
-| Root directory | Repository root (`./`) |
-| Install command | `npm ci` |
-| Build command | `npm run build` |
-| Start command | `npm start` |
-| Entry file | `server.mjs` |
-| Required environment variables | None |
-| Health check | `/healthz` |
-
-The build command validates the ready-to-serve assets in `dist/`; there is no frontend compilation step. The server binds to `0.0.0.0` and uses the platform's `PORT` value.
-
-### Static web hosting
-
-Upload the contents of `dist/` to an empty directory under a website's `public_html`, keeping all five files together. No build step, database or server runtime is required. Deploying below an existing website, such as `/tools/margindesk/`, works without changing existing site routes.
-
-For Git deployment, connect the repository through Hostinger's Git integration. If your plan cannot publish the `dist/` subdirectory directly, use an isolated checkout and copy only `dist/` into the application's public directory. Never expose `.git` or credentials beneath the web root.
-
-### This project's deployment
-
-Pushes to `main` in the original `harshgulatidev/margindesk` repository run the tests, then deploy that exact tested commit to the live static demo through GitHub Actions. A dedicated SSH key in the `production` environment is restricted to the MarginDesk deployment command on the hosting server. The workflow verifies the SSH host key and deploys only the five files in `dist/`. Deployment source and Git metadata stay outside the website document root. Forks and template copies run verification but skip this maintainer's deployment job; connect your own copy through Hostinger Web Apps instead.
-
-For another hosting account, configure its own repository/environment secrets and variables. Required secrets: `HOSTINGER_DEPLOY_KEY`, `HOSTINGER_KNOWN_HOSTS`. Required variables: `HOSTINGER_HOST`, `HOSTINGER_USER`, `HOSTINGER_PORT`. The remote deployment script must exist before enabling the workflow.
+For another static host, upload the five files in `dist/`. The relative asset paths also support hosting under a project subdirectory. The optional Express server can run on any Node.js 22+ host using the local commands above.
 
 ## Calculations
 

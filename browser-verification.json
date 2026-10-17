@@ -1,5 +1,4 @@
 {
-  "url": "https://westwordcorp.com/tools/margindesk/",
   "checks": [
     "initial calculation",
     "desktop render",
@@ -16,5 +15,6 @@
     "print rendering",
     "no browser errors"
   ],
-  "passed": true
+  "passed": true,
+  "scope": "Historical application checks; current hosting is verified by the Pages workflow."
 }

@@ -1,5 +1,4 @@
 {
-  "url": "https://westwordcorp.com/tools/margindesk/",
   "files": [
     {
       "file": "index.html",
@@ -32,5 +31,6 @@
       "exact_match": true
     }
   ],
-  "browser_visual_qa": "passed: desktop and mobile screenshots reviewed; 14 browser checks passed"
+  "browser_visual_qa": "passed: desktop and mobile screenshots reviewed; 14 browser checks passed",
+  "scope": "Historical application checks; current hosting is verified by the Pages workflow."
 }
