@@ -4,6 +4,22 @@
   "private": true,
   "description": "A private-by-default pricing and profit calculator for independent sellers.",
   "type": "module",
-  "scripts": { "test": "node --test tests/*.test.mjs" },
-  "engines": { "node": ">=18" }
+  "license": "MIT",
+  "author": "Harsh Gulati",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/harshgulatidev/margindesk.git"
+  },
+  "main": "server.mjs",
+  "scripts": {
+    "start": "node server.mjs",
+    "build": "node scripts/check-build.mjs",
+    "test": "node --test tests/*.test.mjs"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "express": "5.3.0"
+  }
 }

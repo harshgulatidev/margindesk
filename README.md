@@ -14,15 +14,25 @@ A responsive, browser-based pricing calculator for independent sellers. Calculat
 - Live profit, margin, break-even list price and target-margin pricing
 - INR, USD, GBP and EUR display (no exchange-rate conversion)
 - Browser-local scenario storage with graceful fallback when storage is unavailable
-- No accounts, analytics, API calls or third-party runtime dependencies
+- No accounts, analytics, API calls or third-party browser scripts
 - Keyboard-accessible controls, mobile layouts and print styles
 - Explicit handling of losses, free orders and unattainable targets
 
 ## Run locally
 
-From the project directory, run `python -m http.server 8080 --directory dist`, then visit `http://localhost:8080`.
+Use Node.js 22 or later:
 
-Run the calculation tests with Node.js 18 or later:
+```sh
+npm ci
+npm run build
+npm start
+```
+
+Visit `http://localhost:3000`. The Express server serves only the app's static assets; `/healthz` provides a readiness check. No database, API key or required environment variable is needed. Hosting platforms may supply `PORT`; it defaults to `3000` locally.
+
+For a static-only preview, run `python -m http.server 8080 --directory dist`, then visit `http://localhost:8080`.
+
+Run the calculation and server tests:
 
 ```sh
 npm test
@@ -30,13 +40,33 @@ npm test
 
 ## Deploy on Hostinger
 
+### Hostinger Web Apps
+
+Import this public GitHub repository as a Node.js web app. Use these settings if automatic detection asks for them:
+
+| Setting | Value |
+| --- | --- |
+| Framework | Express |
+| Node.js | 22 or later |
+| Root directory | Repository root (`./`) |
+| Install command | `npm ci` |
+| Build command | `npm run build` |
+| Start command | `npm start` |
+| Entry file | `server.mjs` |
+| Required environment variables | None |
+| Health check | `/healthz` |
+
+The build command validates the ready-to-serve assets in `dist/`; there is no frontend compilation step. The server binds to `0.0.0.0` and uses the platform's `PORT` value.
+
+### Static web hosting
+
 Upload the contents of `dist/` to an empty directory under a website's `public_html`, keeping all five files together. No build step, database or server runtime is required. Deploying below an existing website, such as `/tools/margindesk/`, works without changing existing site routes.
 
 For Git deployment, connect the repository through Hostinger's Git integration. If your plan cannot publish the `dist/` subdirectory directly, use an isolated checkout and copy only `dist/` into the application's public directory. Never expose `.git` or credentials beneath the web root.
 
 ### This project's deployment
 
-Pushes to `main` run the calculation tests, then deploy that exact tested commit to the live app through GitHub Actions. A dedicated SSH key in the `production` environment is restricted to the MarginDesk deployment command on the hosting server. The workflow verifies the SSH host key and deploys only the five files in `dist/`. Deployment source and Git metadata stay outside the website document root.
+Pushes to `main` in the original `harshgulatidev/margindesk` repository run the tests, then deploy that exact tested commit to the live static demo through GitHub Actions. A dedicated SSH key in the `production` environment is restricted to the MarginDesk deployment command on the hosting server. The workflow verifies the SSH host key and deploys only the five files in `dist/`. Deployment source and Git metadata stay outside the website document root. Forks and template copies run verification but skip this maintainer's deployment job; connect your own copy through Hostinger Web Apps instead.
 
 For another hosting account, configure its own repository/environment secrets and variables. Required secrets: `HOSTINGER_DEPLOY_KEY`, `HOSTINGER_KNOWN_HOSTS`. Required variables: `HOSTINGER_HOST`, `HOSTINGER_USER`, `HOSTINGER_PORT`. The remote deployment script must exist before enabling the workflow.
 
@@ -62,4 +92,8 @@ Publish this project directory only. Existing deployment utilities, passwords, S
 
 ## Verification
 
-Seven automated calculation tests pass. Fourteen browser checks pass against the live app, covering desktop/mobile rendering, saved scenarios, persistence, text-only product names, loss states, target pricing, validation, currency labels, export, removal and print output. Desktop and mobile screenshots were visually reviewed. See `browser-verification.json` and `deployment-verification.json` for results. The Actions badges above show the current test and deployment status.
+The automated suite covers seven calculation cases and three Node.js server cases, including health checks and keeping repository/private paths out of the public site. Fourteen browser checks cover desktop/mobile rendering, saved scenarios, persistence, text-only product names, loss states, target pricing, validation, currency labels, export, removal and print output. Desktop and mobile screenshots were visually reviewed. See `browser-verification.json` and `deployment-verification.json` for results. The Actions badges above show the current test and deployment status.
+
+## License
+
+Open-source under the [MIT License](LICENSE). You may use, modify and self-host the app under that license.
